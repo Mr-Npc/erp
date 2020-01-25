@@ -25,5 +25,16 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
 
+    <!-- 后台访问拦截器 -->
+    <!--  -->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/admin/**"/>
+            <mvc:mapping path="/system/*"/>
+            <mvc:exclude-mapping path="/system/login"/>
+            <mvc:exclude-mapping path="/resources/**"/>
+            <bean class="pub.npc.soft.erp.interceptor.admin.LoginInterceptor"></bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
 
 </beans>
