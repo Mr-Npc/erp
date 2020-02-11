@@ -14,7 +14,6 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
                              Object arg2) throws Exception {
-
         String requestURI = request.getRequestURI();
         Object user = request.getSession().getAttribute("user");//将用户的登录信息从session中取出并赋给user
         if(user == null){
