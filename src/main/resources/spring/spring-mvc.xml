@@ -26,7 +26,7 @@
     </bean>
 
     <!-- 后台访问拦截器 -->
-    <!--  -->
+
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/><!-- 拦截该url-->
