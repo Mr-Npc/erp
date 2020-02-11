@@ -29,10 +29,10 @@
     <!--  -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/admin/**"/>
-            <mvc:mapping path="/system/*"/>
-            <mvc:exclude-mapping path="/system/login"/>
-            <mvc:exclude-mapping path="/resources/**"/>
+            <mvc:mapping path="/admin/**"/><!-- 拦截该url-->
+            <mvc:mapping path="/system/*"/><!-- 拦截该url-->
+            <mvc:exclude-mapping path="/system/login"/><!-- 不拦截该url-->
+            <mvc:exclude-mapping path="/resources/**"/><!-- 不拦截该url-->
             <bean class="pub.npc.soft.erp.interceptor.admin.LoginInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>
