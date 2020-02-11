@@ -25,7 +25,7 @@
         <property name="suffix" value=".jsp"></property>
     </bean>
 
-    <!-- 后台访问拦截器 -->
+    <!-- 增加后台访问拦截器 -->
 
     <mvc:interceptors>
         <mvc:interceptor>
