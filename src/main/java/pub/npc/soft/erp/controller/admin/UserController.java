@@ -57,6 +57,7 @@ public class UserController {
             map.put("msg","密码错误");
             return map;
         }
+        request.getSession().setAttribute("user", findUserByname);//将用户登录信息写进Session
         map.put("type","success");
         map.put("msg","登录成功");
         return map;
