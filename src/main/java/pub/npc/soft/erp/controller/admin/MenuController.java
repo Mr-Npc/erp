@@ -1,5 +1,6 @@
 package pub.npc.soft.erp.controller.admin;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import pub.npc.soft.erp.entity.admin.Menu;
+import pub.npc.soft.erp.service.admin.MenuService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,9 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin/menu")
 public class MenuController {
+
+    @Autowired
+    private MenuService menuService;
 
     @RequestMapping(value = "/list" ,method = RequestMethod.GET)
     public ModelAndView list(ModelAndView modelAndView){
@@ -49,7 +54,18 @@ public class MenuController {
             map.put("msg","请选择菜单图标");
             return map;
         }
-        map.put("typr","success");
+        //判断新增父类菜单ID是否为空，如果为空，则将ID更改为-1
+       if(menu.getParentId() == null){
+           menu.setParentId(-1l);
+       }
+
+        //判断菜单数量是否增加，如果小于等于0的情况下则提示
+        if(menuService.add(menu) <= 0){
+            map.put("type","error");
+            map.put("msg","添加失败，请联系管理员");
+            return map;
+        }
+        map.put("type","success");
         map.put("msg","添加成功");
 
         return map;

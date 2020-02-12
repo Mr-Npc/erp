@@ -7,26 +7,25 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Menu {
-    private int id;
-    private int parentId;//菜单父类ID
+    private Long id;
+    private Long parentId;//菜单父类ID
     private String name;//菜单名称
     private String url;//菜单地址
     private String icon;//菜单图标
 
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public int getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public void setParentId(int parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
