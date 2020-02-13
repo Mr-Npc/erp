@@ -7,4 +7,5 @@ import pub.npc.soft.erp.entity.admin.User;
 public interface UserDao {
 
     public User  findUserName(String name);
+
 }
