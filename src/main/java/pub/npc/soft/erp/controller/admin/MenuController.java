@@ -13,6 +13,7 @@ import pub.npc.soft.erp.page.admin.Page;
 import pub.npc.soft.erp.service.admin.MenuService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +39,15 @@ public class MenuController {
     }
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public Map<String,Object> getMenuList(Page page, @RequestParam(name = "name",required = false,defaultValue = "")String name){
-        Map<String,Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> queryMap = new HashMap<String, Object>();
+        queryMap.put("offset", page.getOffset());
+        queryMap.put("pageSize", page.getRows());
+        queryMap.put("name", name);
+        List<Menu> findList = menuService.findList(queryMap);
+        map.put("rows", findList);
+        map.put("total", menuService.getTotal(queryMap));
+
         return map;
     }
     /**
@@ -78,7 +87,76 @@ public class MenuController {
         }
         map.put("type","success");
         map.put("msg","添加成功");
+        return map;
+    }
 
+    /**
+     * 菜单修改
+     * @param menu
+     * @return
+     */
+    @RequestMapping(value="/edit",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> edit(Menu menu){
+        Map<String, String> map = new HashMap<String, String>();
+        if(menu == null){
+            map.put("type", "error");
+            map.put("msg", "请选择正确的菜单信息!");
+            return map;
+        }
+        if(StringUtils.isEmpty(menu.getName())){
+            map.put("type", "error");
+            map.put("msg", "请填写菜单名称!");
+            return map;
+        }
+        if(StringUtils.isEmpty(menu.getIcon())){
+            map.put("type", "error");
+            map.put("msg", "请填写菜单图标类!");
+            return map;
+        }
+        if(menu.getParentId() == null){
+            menu.setParentId(0l);
+        }
+        if(menuService.edit(menu) <= 0){
+            map.put("type", "error");
+            map.put("msg", "修改失败，请联系管理员!");
+            return map;
+        }
+        map.put("type", "success");
+        map.put("msg", "修改成功!");
+        return map;
+    }
+
+    /**
+     * 删除菜单信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value="/delete",method=RequestMethod.POST)
+    @ResponseBody
+    public Map<String, String> delete(
+            @RequestParam(name="id",required=true) Long id
+    ){
+        Map<String, String> map = new HashMap<String, String>();
+        if(id == null){
+            map.put("type", "error");
+            map.put("msg", "请选择要删除的菜单信息!");
+            return map;
+        }
+        List<Menu> findChildernList = menuService.findChildernList(id);
+        if(findChildernList != null && findChildernList.size() > 0){
+            //表示该分类下存在子分类，不能删除
+            map.put("type", "error");
+            map.put("msg", "该分类下存在子分类，不能删除!");
+            return map;
+        }
+        if(menuService.delete(id) <= 0){
+            map.put("type", "error");
+            map.put("msg", "删除失败，请联系管理员!");
+            return map;
+        }
+        map.put("type", "success");
+        map.put("msg", "删除成功!");
         return map;
     }
 }
