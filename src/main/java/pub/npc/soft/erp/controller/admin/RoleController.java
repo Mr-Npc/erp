@@ -57,6 +57,12 @@ public class RoleController {
         map.put("total", roleService.getTotal(queryMap));
         return map;
     }
+
+    /**
+     * 添加角色
+     * @param role
+     * @return
+     */
     @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
     public Map<String,String> add(Role role){
@@ -78,6 +84,50 @@ public class RoleController {
         }
         map.put("type","success");
         map.put("msg","角色添加成功");
+        return map;
+    }
+
+    /**
+     * 角色修改
+     * @param role
+     * @return
+     */
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> edit(Role role){
+        Map<String,String> map = new HashMap<String, String>();
+        if(role == null){
+            map.put("type","error");
+            map.put("msg","请选择需要修改的角色");
+            return map;
+        }
+        if(StringUtils.isEmpty(role.getName())){
+            map.put("type", "error");
+            map.put("msg", "请填写角色名称");
+            return map;
+        }
+        if (roleService.edit(role)<=0){
+            map.put("type", "error");
+            map.put("msg", "角色修改失败，请联系管理员");
+            return map;
+        }
+        map.put("type", "success");
+        map.put("msg", "修改成功!");
+        return map;
+    }
+
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,String> delete(Long id){
+        Map<String,String> map = new HashMap<String, String>();
+        if(id == null){
+            map.put("type", "error");
+            map.put("msg", "请选择需要删除的角色");
+            return map;
+
+        }
+        map.put("type", "success");
+        map.put("msg", "删除成功!");
         return map;
     }
 
